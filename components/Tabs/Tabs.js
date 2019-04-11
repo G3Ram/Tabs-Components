@@ -1,3 +1,6 @@
+const PRINT_YES = true;
+const EMPTY_VALUE = "";
+
 class TabLink {
   constructor(oldTabLink) {
     // Assign this.element to the passed in DOM element
@@ -44,15 +47,25 @@ class TabItem {
   }
 
   selectTabItem() {
+    printToConsole("selectTabItem", "Entering", EMPTY_VALUE);
     // Select all ".tabs-item" elements from the DOM
     const items = document.querySelectorAll(".tabs-item");
 
     // Remove the class "tabs-item-selected" from each element
     Array.from(items).forEach(item => {
       item.classList.remove("tabs-item-selected");
+      printToConsole(
+        "selectTabItem",
+        "Within forEach to remove items",
+        item.classList
+      );
     });
     // Add a class named "tabs-item-selected" to this element
     this.element.classList.toggle("tabs-item-selected");
+    TweenMax.to(".tabs-item-selected", 1, {
+      y: 30,
+      ease: Bounce.easeOut
+    });
   }
 }
 
@@ -69,5 +82,15 @@ class TabItem {
 const tabLinks = document.querySelectorAll(".tabs-link");
 
 tabLinks.forEach(oldTabLink => {
+  printToConsole("Tabs", "Within For each", tabLinks.length);
   new TabLink(oldTabLink);
 });
+
+//This is print function to console.log out
+function printToConsole(methodName, logDetails, logValue) {
+  if (PRINT_YES) {
+    console.log(
+      `${methodName} :: ----- :: ----- ${logDetails} ----- :: ----- ${logValue}`
+    );
+  }
+}
